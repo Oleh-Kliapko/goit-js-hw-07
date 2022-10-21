@@ -1,10 +1,13 @@
 import { galleryItems } from "./gallery-items.js";
 
 const galleryContainer = document.querySelector(".gallery");
-galleryContainer.insertAdjacentHTML(
-  "beforeend",
-  makeGalleryMarkup(galleryItems)
-);
+
+// galleryContainer.insertAdjacentHTML(
+//   "beforeend",
+//   makeGalleryMarkup(galleryItems)
+// );
+
+galleryContainer.innerHTML = makeGalleryMarkup(galleryItems);
 
 function makeGalleryMarkup(galleryItems) {
   return galleryItems
@@ -18,7 +21,7 @@ function makeGalleryMarkup(galleryItems) {
 }
 
 new SimpleLightbox(".gallery a", {
-  captionData: "alt",
+  captionsData: "alt",
   captionDelay: 250,
 });
 
