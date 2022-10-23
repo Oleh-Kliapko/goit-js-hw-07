@@ -61,18 +61,19 @@ function onModalOriginalPicture(targetClick) {
   const urlOriginalSizePicture = targetClick.dataset.source;
 
   const instance = basicLightbox.create(
-    ` <div class="modal"> <img src="${urlOriginalSizePicture}" alt="Big Pictures"/> </div> `
+    ` <div class="modal"> <img src="${urlOriginalSizePicture}" alt="Big Pictures"/> </div> `,
+    {
+      onShow: (instance) => {
+        galleryContainer.addEventListener("keydown", onEscapeButton);
+      },
+
+      onClose: (instance) => {
+        galleryContainer.removeEventListener("keydown", onEscapeButton);
+      },
+    }
   );
 
   instance.show();
-
-  const visible = basicLightbox.visible();
-
-  if (visible) {
-    galleryContainer.addEventListener("keydown", onEscapeButton);
-  } else {
-    galleryContainer.removeEventListener("keydown", onEscapeButton);
-  }
 
   function onEscapeButton(evt) {
     if (evt.key === "Escape") {
