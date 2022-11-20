@@ -1,10 +1,9 @@
 import { galleryItems } from "./gallery-items.js";
+import onOpenBigImages from "./01-js-functions/open-big-image.js";
+import markupGallery from "./01-js-functions/markup-gallery.js";
 
 const galleryContainer = document.querySelector(".gallery");
-galleryContainer.insertAdjacentHTML(
-  "beforeend",
-  makeGalleryMarkup(galleryItems)
-);
+galleryContainer.insertAdjacentHTML("beforeend", markupGallery(galleryItems));
 
 if ("loading" in HTMLImageElement.prototype) {
   const lazyImages = document.querySelectorAll('img[loading="lazy"]');
@@ -22,28 +21,7 @@ if ("loading" in HTMLImageElement.prototype) {
   document.body.appendChild(script);
 }
 
-function makeGalleryMarkup(galleryItems) {
-  return galleryItems
-    .map(({ preview, original, description }) => {
-      return `
-      <div class="gallery__item">
-        <a class="gallery__link" href="${original}">
-        <img class="gallery__image lazyload"
-            loading="lazy"
-            data-src="${preview}"
-            data-source="${original}"
-            alt="${description}"
-          />
-        </a>
-      </div>`;
-    })
-    .join("");
-}
-
-const galleryContainerClick = galleryContainer.addEventListener(
-  "click",
-  getRightClick
-);
+galleryContainer.addEventListener("click", getRightClick);
 
 function getRightClick(evt) {
   evt.preventDefault();
@@ -53,31 +31,5 @@ function getRightClick(evt) {
     return;
   }
 
-  onModalOriginalPicture(targetClick);
-}
-
-function onModalOriginalPicture(targetClick) {
-  const linkContainer = document.querySelectorAll(".gallery__image");
-  const urlOriginalSizePicture = targetClick.dataset.source;
-
-  const instance = basicLightbox.create(
-    ` <div class="modal"> <img src="${urlOriginalSizePicture}" alt="Big Pictures"/> </div> `,
-    {
-      onShow: (instance) => {
-        galleryContainer.addEventListener("keydown", onEscapeButton);
-      },
-
-      onClose: (instance) => {
-        galleryContainer.removeEventListener("keydown", onEscapeButton);
-      },
-    }
-  );
-
-  instance.show();
-
-  function onEscapeButton(evt) {
-    if (evt.key === "Escape") {
-      instance.close();
-    }
-  }
+  onOpenBigImages(targetClick, galleryContainer);
 }
