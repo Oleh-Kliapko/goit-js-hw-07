@@ -1,4 +1,4 @@
-export default function onOpenBigImages(targetClick, galleryContainer) {
+export default function OpenBasicLightBox(targetClick, galleryContainer) {
   const instance = basicLightbox.create(
     ` <div class="modal"> <img src="${targetClick.dataset.source}" alt="${targetClick.alt}"/> </div> `,
     {
